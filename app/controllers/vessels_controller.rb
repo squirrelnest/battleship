@@ -7,7 +7,7 @@ class VesselsController < ApplicationController
 
   # POST /vessels/new/:vessel_type/player/:player_id
   def create
-    @vessel = Vessel.new(name: params[:vessel_name], size: params[:size], player_id: params[:player_id])
+    @vessel = Vessel.new(name: params[:vessel_name], vessel_type: params[:vessel_type], player_id: params[:player_id])
     if @vessel.save
       redirect_to @vessel, { notice: 'Vessel was successfully created.' }
     else

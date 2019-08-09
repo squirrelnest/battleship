@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_09_202455) do
+ActiveRecord::Schema.define(version: 2019_08_09_215039) do
 
   create_table "games", force: :cascade do |t|
     t.string "name"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 2019_08_09_202455) do
 
   create_table "players", force: :cascade do |t|
     t.string "name"
-    t.integer "score"
+    t.integer "score", default: 0
     t.integer "game_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -36,7 +36,6 @@ ActiveRecord::Schema.define(version: 2019_08_09_202455) do
 
   create_table "vessels", force: :cascade do |t|
     t.string "name"
-    t.integer "size"
     t.integer "player_id"
     t.string "vessel_type"
     t.datetime "created_at", null: false

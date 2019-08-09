@@ -1,8 +1,8 @@
 class Vessel < ApplicationRecord
     belongs_to :player
 
-    def size(string)
-        case string
+    def size
+        case self.vessel_type
         when 'CARRIER'
             5
         when 'BATTLESHIP'
