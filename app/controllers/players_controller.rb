@@ -4,8 +4,4 @@ class PlayersController < ApplicationController
       score = 0
   end
 
-  def shoot
-    
-  end
-
 end

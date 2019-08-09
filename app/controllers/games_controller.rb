@@ -1,83 +1,45 @@
 class GamesController < ApplicationController
-  before_action :set_game, only: [:show, :edit, :update, :destroy]
 
-  # GET /games
-  # GET /games.json
-  def index
-    @games = Game.all
+  # POST /game/:game_id/place/:player_id/:vessel_type/:y/:x
+  def place_vessel(y, x)
+    @vessel = Vessel.find_by(player_id: params[:player_id], vessel_type: params[:vessel_type])
+    @location = VesselLocation.create(x: params[:x], y: params[:y], vessel_id: @vessel.id)
   end
 
-  # GET /games/1
-  # GET /games/1.json
-  def show
-    @player1 = Player.where(game_id: @game.id)
-    @player2 = Player.where(game_id: @game.id)
-  end
-
-  # GET /games/new
-  def new
-    @game = Game.new()
-    @player1 = Player.new()
-    @player2 = Player.new()
-  end
-
-  # GET /games/1/edit
-  def edit
-  end
-
-  # POST /games
-  # POST /games.json
-  def create
-    @game = Game.new(game_params)
-    @player1 = Player.new(game_id: @game.id, name: params[:player1])
-    @player2 = Player.new(game_id: @game.id, name: params[:player2])
-
-    respond_to do |format|
-      if @game.save
-        @player1.save
-        @player2.save
-        format.html { redirect_to @game, notice: 'Game was successfully created.' }
-        format.json { render :show, status: :created, location: @game }
-      else
-        format.html { render :new }
-        format.json { render json: @game.errors, status: :unprocessable_entity }
+  # POST /game/:game_id/shoot/:enemy_player_id/:y/:x
+  def shoot(y, x)
+    @player = Player.find(params[:enemy_player_id])
+    @vessels = @player.vessels
+    @vessels.each do |vessel|
+      vessel.vessel_locations.each do |location|
+        if location.x == x && location.y == y
+          @player.score += 1
+          vessel.damage += 1
+          if vessel.damage >= vessel.size
+            vessel.status = 'SUNK'
+            puts "Sunk"
+          else
+            puts "Hit" 
+            # redirect_to turn <-- next_player's turn
+          end
+        else
+          puts "Miss"
+          # redirect_to turn <-- next_player's turn
+        end
       end
     end
   end
 
-  # PATCH/PUT /games/1
-  # PATCH/PUT /games/1.json
-  def update
-    respond_to do |format|
-      if @game.update(game_params)
-        format.html { redirect_to @game, notice: 'Game was successfully updated.' }
-        format.json { render :show, status: :ok, location: @game }
-      else
-        format.html { render :edit }
-        format.json { render json: @game.errors, status: :unprocessable_entity }
-      end
-    end
+  # GET /game/:game_id/score
+  def score
+    @game = Game.find(params[:game_id])
+    @player1_score = Player.find(@game.players.first).score
+    @player2_score = Player.find(@game.players.last).score
+    render plain: "Player 1: #{@player1_score} | Player 2: #{@player2_score}"
   end
 
-  # DELETE /games/1
-  # DELETE /games/1.json
-  def destroy
-    @game.destroy
-    respond_to do |format|
-      format.html { redirect_to games_url, notice: 'Game was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+  def turn
+
   end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_game
-      @game = Game.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def game_params
-      params.require(:game).permit(:name)
-    end
 
 end
