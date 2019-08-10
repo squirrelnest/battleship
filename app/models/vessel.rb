@@ -1,7 +1,7 @@
 class Vessel < ApplicationRecord
     belongs_to :player
     has_many :vessel_locations
-    
+
     def size
         case self.vessel_type
         when 'CARRIER'
@@ -18,4 +18,7 @@ class Vessel < ApplicationRecord
             3
         end
     end
+
+    # TODO: add validations
+    
 end
