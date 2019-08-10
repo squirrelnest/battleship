@@ -1,6 +1,14 @@
 class GamesController < ApplicationController
   skip_before_action :verify_authenticity_token
 
+  # POST localhost:3000/games/new/:game_name/:player1/:player2
+  def create
+    @game = Game.create(name: params[:game_name])
+    Player.create(name: params[:player1], game_id: @game.id)
+    Player.create(name: params[:player2], game_id: @game.id)
+    render plain: "Game created."
+  end
+
   # POST /game/:game_id/place/:player_id/:vessel_type/:y/:x
   def place_vessel
     @vessel = Vessel.find_by(player_id: params[:player_id], vessel_type: params[:vessel_type])

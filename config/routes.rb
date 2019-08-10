@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   post '/game/:game_id/place/:player_id/:vessel_type/:y/:x' => 'games#place_vessels'
 
-  post '/games/:game_id/:player1/:player2' => 'games#create'
+  post '/games/new/:game_name/:player1/:player2' => 'games#create'
 
   get '/game/:game_id/score' => 'games#score'
 
