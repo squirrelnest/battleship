@@ -13,22 +13,22 @@ The naval combat game in RoR with Ruby version 2.4.0
   ### ROUTES
 
     Place vessels:
-  post 'localhost:3000/game/:game_id/place/:player_id/:vessel_type/:y/:x'
+  post 'localhost:3000/game/:game_id/place/:player_id/:vessel_type/:y/:x' => 'games#place_vessels'
 
     Create new game:
-  post 'localhost:3000/games/:game_id/:player1/:player2'
+  post 'localhost:3000/games/new/:game_name/:player1_name/:player2_name' => 'games#create'
 
     Show score:
-  get 'localhost:3000/game/:game_id/score'
+  get 'localhost:3000/game/:game_id/score' => 'games#score'
 
     Take a shot:
-  post 'localhost:3000/game/:game_id/shoot/:enemy_player_id/:y/:x'
+  post 'localhost:3000/game/:game_id/shoot/:enemy_player_id/:y/:x' => 'games#shoot'
 
     Reset game:
-  post 'localhost:3000/game/:game_id/reset'
+  post 'localhost:3000/game/:game_id/reset' => 'games#reset'
 
     Create vessel:
-  post 'localhost:3000/vessel/create/:vessel_type/:vessel_name/:y/:x/player/:player_id'
+  post 'localhost:3000/vessel/create/:vessel_type/:vessel_name/:y/:x/player/:player_id' => 'vessels#create'
 
 ## TODOs
 
